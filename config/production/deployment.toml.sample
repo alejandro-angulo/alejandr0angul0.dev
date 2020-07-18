@@ -1,0 +1,22 @@
+order = [".jpg$", ".gif$"]
+
+[[targets]]
+name = "aws-s3"
+URL = "$S3URL"
+cloudFrontDistributionID = "$cloudFrontDistributionID"
+
+[[matchers]]
+#  Cache static assets for 1 year.
+pattern = "^.+\\.(js|css|svg|ttf)$"
+cacheControl = "max-age=31536000, no-transform, public"
+gzip = true
+
+[[matchers]]
+pattern = "^.+\\.(png|jpg)$"
+cacheControl = "max-age=31536000, no-transform, public"
+gzip = false
+
+[[matchers]]
+pattern = "^.+\\.(html|xml|json)$"
+gzip = true
+

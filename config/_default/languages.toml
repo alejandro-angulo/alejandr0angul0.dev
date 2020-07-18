@@ -1,0 +1,27 @@
+[en]
+languageName = "English"
+title = "Alejandr00"
+subtitle = ""
+owner = ""
+keywords = ""
+copyright = ""
+menuMore = "Show more"
+readMore = "Read more"
+readOtherPosts = "Read other posts"
+missingContentMessage = "Page not found..."
+missingBackButtonLabel = "Back to home page"
+
+[en.params.logo]
+  logoText = "Alejandr00"
+  logoHomeLink = "/"
+
+[en.menu]
+  [[en.menu.main]]
+    identifier = "about"
+    name = "about"
+    url = "/about"
+  [[en.menu.main]]
+    identifier = "gh"
+    name = "github"
+    url = "https://github.com/alejandro-angulo"
+

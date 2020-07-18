@@ -1,0 +1,6 @@
+# Hugo output directory
+/public
+
+# Deployment config
+config/production/deployment.toml
+
