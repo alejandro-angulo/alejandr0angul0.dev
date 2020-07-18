@@ -16,7 +16,7 @@ jobs:
             pip install awscli
 
       # build with hugo
-      - run: HUGO_ENV=production hugo -v
+      - run: HUGO_ENV=production hugo -v --minify
       - run: 
           name: Test generated HTML files
           command: |
