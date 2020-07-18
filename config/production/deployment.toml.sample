@@ -2,8 +2,8 @@ order = [".jpg$", ".gif$"]
 
 [[targets]]
 name = "aws-s3"
-URL = "$S3URL"
-cloudFrontDistributionID = "$cloudFrontDistributionID"
+URL = "{{S3URL}}"
+cloudFrontDistributionID = "{{CLOUDFRONTDISTRIBUTIONID}}"
 
 [[matchers]]
 #  Cache static assets for 1 year.

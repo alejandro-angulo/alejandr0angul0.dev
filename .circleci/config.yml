@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: cibuilds/hugo:latest
+    steps:
+      # clone repo
+      - checkout
+      - run: git submodule sync && git submodule update --init
+
+      - run:
+          name: install AWS CLI
+          command: |
+            sudo apt update
+            sudo apt install python-pip
+            pip install awscli
+
+      # build with hugo
+      - run: HUGO_ENV=production hugo -v
+      - run: 
+          name: Test generated HTML files
+          command: |
+            htmlproofer public --allow-hash-href --check-html \
+            --empty-alt-ignore --disable-external
+
+      - deploy:
+          name: deploy to AWS
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              export PROD_DEPLOY_CONFIG_PATH="config/production/deployment.toml"
+              sed "s~{{S3URL}}~${S3URL}~g" "${PROD_DEPLOY_CONFIG_PATH}.sample" > "${PROD_DEPLOY_CONFIG_PATH}"
+              sed -i "s~{{CLOUDFRONTDISTRIBUTIONID}}~${CLOUDFRONTDISTRIBUTIONID}~g" "${PROD_DEPLOY_CONFIG_PATH}"
+              HUGO_ENV=production hugo deploy --invalidateCDN
+            else
+              echo "Not master branch, not deploying"
+            fi
