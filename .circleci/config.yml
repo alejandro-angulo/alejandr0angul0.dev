@@ -1,13 +1,36 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
-workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
-    jobs:
-      - welcome/run
+version: 2
+jobs:
+  build:
+    docker:
+      - image: cibuilds/hugo:latest
+    steps:
+      # clone repo
+      - checkout
+      - run: git submodule sync && git submodule update --init
+
+      - run:
+          name: install AWS CLI
+          command: |
+            sudo apt update
+            sudo apt install python-pip
+            pip install awscli
+
+      # build with hugo
+      - run: HUGO_ENV=production hugo -v
+      - run: 
+          name: Test generated HTML files
+          command: |
+            htmlproofer public --allow-hash-href --check-html \
+            --empty-alt-ignore --disable-external
+
+      - deploy:
+          name: deploy to AWS
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "master" ]; then
+              export PROD_DEPLOY_CONFIG_PATH="config/production/deployment.toml"
+              sed "s~{{S3URL}}~${S3URL}~g" "${PROD_DEPLOY_CONFIG_PATH}.sample" > "${PROD_DEPLOY_CONFIG_PATH}"
+              sed -i "s~{{CLOUDFRONTDISTRIBUTIONID}}~${CLOUDFRONTDISTRIBUTIONID}~g" "${PROD_DEPLOY_CONFIG_PATH}"
+              HUGO_ENV=production hugo deploy --invalidateCDN
+            else
+              echo "Not master branch, not deploying"
+            fi
