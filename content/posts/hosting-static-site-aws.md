@@ -314,6 +314,6 @@ aws s3 cp <path to sample index file> s3://<your domain name>/index.html
 aws s3 cp <path to sample 404 file> s3://<your domain name>/404.html
 ```
 
-Fire up your site and cross your fingers. If all went well you should see the `It works!` message when you point your broweser to
+Fire up your site and cross your fingers. If all went well you should see the `It works!` message when you point your browser to
 your URL and a page does not exist message when you try accessing something like `<your domain name here>/foo`.
 
