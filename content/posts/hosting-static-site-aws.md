@@ -3,7 +3,7 @@ title = "Hosting a Static Site on AWS"
 date = "2020-07-17T12:31:32-07:00"
 author = "alejandro"
 tags = ["info-dump"]
-keywords = ["AWS", "S3", "CloudFront", "Route 53", "Hugo"]
+keywords = ["AWS", "S3", "CloudFront", "Route 53"]
 showFullContent = false
 +++
 
