@@ -62,8 +62,6 @@ commands.
 
 ### Partition Drive
 
-TODO: Rewrite this section to have more of a focus on what commands to run (too much time spent describing)
-
 My device had two SSDs installed. `lsblk` showed them as `nvme0n1` and `nvme1n1`. My primary SSD was `nvme1n1` so I ran `gdisk
 /dev/nmve1n1`. You can enter `?` to get a list of commands. I went ahead and deleted (`d`) all the existing partitions. Created an
 EFI partition (`n`) on partition 1 with a size of 100 MiB (chose first sector and then `+100M` for the last sector) with hex code
