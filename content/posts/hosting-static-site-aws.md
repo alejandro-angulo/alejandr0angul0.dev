@@ -128,7 +128,7 @@ aws acm get-certificate --certificate-arn <your cert arn here>
 Since S3 website endpoints don't support HTTPS, we'll configure CloudFront (AWS's CDN service) to serve up our files. The template
 for the JSON required is below. The region name is whatever was configured when `aws configure` was ran earlier.
 
-{{<code language="json">}}
+```json
 {
     "Aliases": {
         "Quantity": 1,
@@ -253,7 +253,7 @@ for the JSON required is below. The region name is whatever was configured when 
     "HttpVersion": "http2",
     "IsIPV6Enabled": true
 }
-{{</code>}}
+```
 
 ```bash
 aws create-distribution --distribution-config file://<path to/gc json file>
@@ -316,4 +316,3 @@ aws s3 cp <path to sample 404 file> s3://<your domain name>/404.html
 
 Fire up your site and cross your fingers. If all went well you should see the `It works!` message when you point your browser to
 your URL and a page does not exist message when you try accessing something like `<your domain name here>/foo`.
-

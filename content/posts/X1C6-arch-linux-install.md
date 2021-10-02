@@ -16,11 +16,14 @@ guide](https://github.com/ejmg/an-idiots-guide-to-installing-arch-on-a-lenovo-ca
 guide](https://gist.github.com/HardenedArray/ee3041c04165926fca02deca675effe1), and the [Arch Linux wiki
 page](https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_6)) as references.
 
+_Note_: This was my setup as of July 2020ish. Things have changed since then.
+
 ## Setup
 
 ### Prepare Installation Media
 
-TODO: Add steps on creating bootable USB (link to wiki page)
+This part is relatively straighforward. Check out the [arch wiki
+page](https://wiki.archlinux.org/title/USB_flash_installation_medium).
 
 ### Prepare BIOS
 
@@ -234,26 +237,26 @@ cryptsetup luksDump /dev/nvme1n1p2  # Should see slots 0 and 1 occupied
 cryptsetup luksDump /dev/nvme0n1p1  # Should see slots 0 and 1 occupied
 ```
 
-Configure automatic opening of the data volume through `crypttab`.
+Configure automatic opening of the data volume through `crypttab`. Edit `/etc/crypttab`
 
-{{<code title="/etc/crypttab" language="less">}}
+```plaintext
 # SNIP ...
 # <name>       <device>                                     <password>              <options>
 Secondary      /dev/nvme0n1p1                               /crypto_keyfile.bin     discard
 # SNIP ...
-{{</code>}}
+```
 
 The `discard` option has to do with the `TRIM` command and is basically a performance optimization. Read more about it on
 [wikipedia](https://en.wikipedia.org/wiki/Trim_(computing)).
 
-Edit the `mkinitpcio` configuration to setup decryption.
+Edit the `mkinitpcio` configuration file (`/etc/mkinitpcio.conf`) to setup decryption.
 
-{{<code title="/etc/mkinitpcio.conf" language="less">}}
+```plaintext
 # SNIP ...
 FILES=(/crypto_keyfile.bin)
 # SNIP ...
 HOOKS=(base udev autodetect modconf block keymap encrypt lvm2 resume filesystems keyboard fsck)
-{{</code>}}
+```
 
 Generate the initrd image.
 
@@ -299,15 +302,15 @@ You can log out and log in with your own user account now.
 
 ### Setup WiFi
 
-`iwd` can be used to manage the network with the proper configuration.
+`iwd` can be used to manage the network with the proper configuration. Edit `/etc/iwd/main.conf`
 
-{{<code title="/etc/iwd/main.conf" language="less">}}
+```plaintext
 [General]
 EnableNetworkConfiguration=true
 
 [Network]
 NameResolvingService=systemd
-{{</code>}}
+```
 
 The `EnableNetworkConfiguration` setting allows `iwd` to handle stuff like DHCP. The `NameResolvingService` configures DNS. I
 decided to use `systemd-resolved` mostly just because I already had it installed (part of the `systemd` package). Enable and start
@@ -333,9 +336,9 @@ reflector --verbose -l 200 -n 20 -p https --sort rate --save /etc/pacman.d/mirro
 ```
 
 A [pacman hook](https://wiki.archlinux.org/index.php/Pacman#Hooks) can be setup to automatically run reflector when
-`pacman-mirrorlist` is updated (this package contains the official mirrorlist).
+`pacman-mirrorlist` is updated (this package contains the official mirrorlist). Create `/etc/pacman.d/hooks/mirrorupgrade.hook`
 
-{{<code title="/etc/pacman.d/hooks/mirrorupgrade.hook" language="less">}}
+```plaintext
 [Trigger]
 Operation = Upgrade
 Type = Package
@@ -346,7 +349,7 @@ Description = Updating pacman-mirrorlist with reflector and removing pacnew...
 When = PostTransaction
 Depends = reflector
 Exec = /bin/sh -c "reflector -l 200 -n 20 -p https --sort rate --save /etc/pacman.d/mirrorlist; rm -f /etc/pacman.d/mirrorlist.pacnew"
-{{</code>}}
+```
 
 Make sure everything is up-to-date.
 
@@ -368,13 +371,6 @@ cd ..
 rm -rf yay
 ```
 
-<!--
-yay -S ntp
-# I accidentally set my local time as the UTC time for my system clock (so I was 7 hours behind)
-# Ran ntpd -gq to fix
-# TODO: Configure ntp
--->
-
 Set up `zsh`.
 
 ```bash
@@ -387,8 +383,6 @@ cp /usr/share/oh-my-zsh/zshrc ~/.zshrc
 I normally use `i3` but I've been wanting to switch to `wayland` so I went with `sway` since it's the closest thing (the about
 section on GitHub bills it as an "i3-compatible Wayland compositor").
 
-TODO: Link to this? https://wiki.archlinux.org/index.php/Sway#Control_swaynag_with_the_keyboard
-
 ```bash
 yay -S sway swaylock swayidle waybar xorg-server-xwayland
 # Can probably leave the 2 lines below out
@@ -398,11 +392,6 @@ mkdir -p ~/.config/waybar
 cp /etc/xdg/waybar/* ~/.config/waybar
 ```
 I edited my sway config to mimic my i3 config so I needed to grab a few packages first.
-
-# TODO
-- configure waybar for spotifyd (move this after section on spotifyd?)
-- copy file in resource directory for media player control in waybar
-- install playerctl ?
 
 ```bash
 yay -S termite bemenu-wlroots
@@ -438,8 +427,6 @@ Next thing I wanted to fix were the fonts. I didn't like the current ones so I i
 fonts](https://ww(w.nerdfonts.com/). When I looked at the AUR page for `nerd-fonts-complete` there was a pinned comment that
 suggested grabbing the tarball manually since it was so large (~2GB).
 
-# TODO: install ttf-liberation too?
-
 ```bash
 yay -S wget
 mkdir -p ~/.local/share/fonts
@@ -447,20 +434,12 @@ ln -s /usr/lib/nerd-fonts-complete/*.sh ~/.local/share/fonts/
 echo source ~/.local/share/fonts/i_all.sh >> ~/.zshrc
 ```
 
-# TODO: How to set font in sway and termite?
-
-<!--
-# bluetooth
-yay -S bluez bluez-utils
-# ^ maybe leave this out? haven't gotten it to work
--->
 #### Notifications
 
 ```bash
 yay -S mako libnotify
 add line to sway config
 ```
-
 
 #### Terminal Themes
 
@@ -489,13 +468,16 @@ client but it's
 yay -S spotify-tui spotifyd
 ```
 
-# set up keyring to use with spotify
+Set up keyring to use with spotify
+
+```bash
 yay -S gnome-keyring libsecret  # seahorse too?, not sure how to manage purely from cli
+```
 
 Edit `/etc/pam.d/login` to add in `auth optional pam_gnome_keyring.so` and `session optional pam_gnome_keyring.so auto_start`.
 Mine looks like this.
 
-{{<code title="/etc/pam.d/login" language="less">}}
+```plaintext
 #%PAM-1.0
 
 auth       required     pam_securetty.so
@@ -505,22 +487,20 @@ auth       optional     pam_gnome_keyring.so
 account    include      system-local-login
 session    include      system-local-login
 session    optional     pam_gnome_keyring.so auto_start
-{{</code>}}
+```
 
 Update the `passwd` file to include `password optional pam_gnome_keyring.so`.
 
-TODO: Link to the gnome keyring wiki page?
-
 We need to run the following when sway starts.
 
-```
+```bash
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK
 ```
 
 Normally this would be added in `~/.xinitrc` but there isn't (afaik) a wayland equivalent. So I created a start script for sway.
 
-```
+```bash
 eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
 export SSH_AUTH_SOCK
 sway
@@ -538,18 +518,18 @@ systemctl --user start spotifyd.service  # do not run these two with sudo
 systemctl --user enable spotifyd.service
 ```
 
-Run `spt` and it'll guide you through setup. See the their readme for instructions
-https://github.com/Rigellute/spotify-tui#using-with-spotifyd .
+Run `spt` and it'll guide you through setup. See the [their readme](https://github.com/Rigellute/spotify-tui#using-with-spotifyd)
+for instructions.
 
+```bash
 git clone --separate-git-dir=$HOME/.myconf /path/to/repo $HOME/myconf-tmp
 rm -r ~/myconf-tmp/
 alias config='/usr/bin/git --git-dir=$HOME/.myconf/ --work-tree=$HOME'  # Add this into .bashrc/.zshrc
+```
 
+#### Backlight Control
 
-gammalight
-yay -S gammastep # idk if use, start automatically?
-
-backlight control
+```bash
 yay -S light
 usermod -a -G video alejandro  # need to be in video group to control backlight
 # below 2 reload udev rules, so light doesn't requre root permissions
@@ -557,35 +537,36 @@ sudo udevadm control --reload-rule
 sudo udevadm trigger
 # Above 2 commands didn't work for me, but did after a reboot
 # installed wshowkeys and used it to figure out what keys to bind to light commands in sway config
+```
 
+#### Terminal prompt
+
+```bash
 yay -S zsh-theme-powerlevel10k-git
-echo 'source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme' >>! ~/.zshrc
+echo 'source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme' >> ~/.zshrc
+```
 
 Restart terminal and p10k config wizard will run (or manually run `p10k configure`)
 
-Vim plugin manager
-mkdir -p ~/.vim/bundle
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-
-TODO: Mention installing ctags
-`ctags -f tags --options=/path/to/rust/src/etc/ctags.rust --recurse /path/to/src`
-
-ranger (file manager)
-yay -S ranger
-
-better top (htop)
-yay -S top
-
-Read this for power stuffs:
-https://github.com/erpalma/throttled
+#### Vim plugin manager
 
 ```
+mkdir -p ~/.vim/bundle
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+```
+
+#### Power Management
+
+Read this for power stuffs: https://github.com/erpalma/throttled
+
+```bash
 yay -S throttled
 systemctl enable --now lenovo_fix.service
 ```
 
-Network printer
-```
+#### Network printer
+
+```bash
 yay -S cups
 systemctl enable --now org.cups.cupsd.service
 yay -S nss-mdns avahi
@@ -596,24 +577,27 @@ Update `/etc/nsswitch.conf` to include `hosts: ... mdns_minimal [NOTFOUND=return
 
 Browse to `localhost:631` to configure printer (Brother HL-L2350 for me) (`yay -S brother-hll2350dw`) (`yay -S ghostscript`)
 
-QMK
+#### QMK
+
 ```
-yay -Q python-pip 
+yay -Q python-pip
 pip install --user qmk
 qmk setup
 # CD into qmk directory
 make crkbd:default
 ```
 
-{{<code title="/etc/udev/rules.d/55-caterina.rules" language="less">}}
+Edit `/etc/udev/rules.d/55-caterina.rules`
+
+```plaintext
 # ModemManager should ignore the following devices
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="2a03", ATTRS{idProduct}=="0036", TAG+="uaccess", RUN{builtin}+="uaccess", ENV{ID_MM_DEVICE_IGNORE}="1"
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0036", TAG+="uaccess", RUN{builtin}+="uaccess", ENV{ID_MM_DEVICE_IGNORE}="1"
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="1b4f", ATTRS{idProduct}=="9205", TAG+="uaccess", RUN{builtin}+="uaccess", ENV{ID_MM_DEVICE_IGNORE}="1"
 SUBSYSTEMS=="usb", ATTRS{idVendor}=="1b4f", ATTRS{idProduct}=="9203", TAG+="uaccess", RUN{builtin}+="uaccess", ENV{ID_MM_DEVICE_IGNORE}="1"
-{{</code>}}
-
 ```
+
+```bash
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 qmk flash
@@ -621,5 +605,3 @@ qmk flash
 
 Had to reboot before this worked for me. Because of avrdude? `qmk doctor` showed udev rules were setup. Had to add user to `uucp`
 group to write to device.
-
-

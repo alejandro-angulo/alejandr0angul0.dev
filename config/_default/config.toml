@@ -1,4 +1,7 @@
 baseURL = "https://alejandr0angul0.dev/"
 languageCode = "en-us"
-theme = "terminal"
+theme = "alejandro-angulo"
 
+[markup]
+  [markup.highlight]
+	noClasses = false

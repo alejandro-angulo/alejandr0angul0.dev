@@ -1,0 +1,72 @@
+body {
+    background-color: #1d2021;
+    color: #ffffdf;
+	margin: 1em;
+}
+
+a {
+    color: #00a7af;
+}
+a:visited {
+    color: #005f87;
+}
+a:hover {
+	background-color: #00a7af;
+	color: #1d2021;
+}
+
+#header-link {
+    text-decoration: none;
+}
+
+#content {
+    margin-bottom: 2em;
+}
+
+#site-footer {
+    background-color: #3a3a3a;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+	padding: 3px 0;
+    position: fixed;
+    width: 100%;
+}
+
+#site-footer .current-page {
+    color: #ffaf00;
+	padding: 0 5px;
+}
+
+#nav {
+    display: inline-block;
+}
+
+.lhs {
+    float: left;
+}
+
+.rhs {
+    float: right;
+}
+
+.home-link,
+.nav-link {
+	text-decoration: none;
+	padding: 0 5px;
+}
+.nav-link,
+.nav-link:visited,
+.home-link,
+.home-link:visited {
+    color: #949494;
+}
+.nav-link:hover,
+.home-link:hover {
+    color: inherit;
+    background-color: inherit;
+}
+
+.highlight .chroma {
+	padding: 1em;
+}

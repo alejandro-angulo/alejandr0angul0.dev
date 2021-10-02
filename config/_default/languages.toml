@@ -1,6 +1,6 @@
 [en]
 languageName = "English"
-title = "Alejandr00"
+title = "alejandr00"
 subtitle = ""
 owner = ""
 keywords = ""
@@ -24,4 +24,3 @@ missingBackButtonLabel = "Back to home page"
     identifier = "gh"
     name = "github"
     url = "https://github.com/alejandro-angulo"
-
