@@ -4,10 +4,12 @@ body {
 	margin: 1em;
     max-width: 800px;
     margin: 1em auto 0;
+    font-family: Hack, monospace;
 }
 
 a {
     color: #00a7af;
+    padding: 0.1em;
 }
 a:visited {
     color: #005f87;
@@ -15,6 +17,7 @@ a:visited {
 a:hover {
 	background-color: #00a7af;
 	color: #1d2021;
+    text-decoration: none;
 }
 
 #content {
@@ -39,7 +42,7 @@ a:hover {
 }
 #banner .current-page {
     color: #ffaf00;
-	padding: 0 5px;
+	padding-left: 5px;
 }
 
 #nav {
