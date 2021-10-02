@@ -37,3 +37,6 @@ showLastUpdated = false
   creator = "alejandr0angul0"
   site = "alejandr0angul0"
 
+[markup]
+  [markup.highlight]
+	codeFences = false

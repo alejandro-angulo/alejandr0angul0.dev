@@ -12,8 +12,8 @@ jobs:
           name: install AWS CLI
           command: |
             sudo apt update
-            sudo apt install python-pip
-            pip install awscli
+            sudo apt install python3-pip
+            pip3 install awscli
 
       # build with hugo
       - run: HUGO_ENV=production hugo -v --minify
