@@ -1,36 +1,69 @@
+---
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: cibuilds/hugo:latest
+
     steps:
-      # clone repo
       - checkout
-      - run: git submodule sync && git submodule update --init
+
+      # TODO: Uncomment below two lines and install git further up if submodules end up being added
+      # install git submodules for managing third-part dependencies
+      # - run: git submodule sync && git submodule update --init
 
       - run:
-          name: install AWS CLI
-          command: |
-            sudo apt update
-            sudo apt install python3-pip
-            pip3 install awscli
+          name: Build HTML files
+          command: HUGO_ENV=production hugo -v --minify
 
-      # build with hugo
-      - run: HUGO_ENV=production hugo -v --minify
-      - run: 
+      - run:
           name: Test generated HTML files
           command: |
             htmlproofer public --allow-hash-href --check-html \
             --empty-alt-ignore --disable-external
 
-      - deploy:
-          name: deploy to AWS
+      - persist_to_workspace:
+          root: .
+          paths:
+            - public
+            - config
+            - themes
+
+  deploy:
+    docker:
+      - image: cibuilds/hugo:latest
+    environment:
+      PROD_DEPLOY_CONFIG_PATH: config/production/deployment.toml
+
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Install AWS CLI
           command: |
-            if [ "${CIRCLE_BRANCH}" = "master" ]; then
-              export PROD_DEPLOY_CONFIG_PATH="config/production/deployment.toml"
-              sed "s~{{S3URL}}~${S3URL}~g" "${PROD_DEPLOY_CONFIG_PATH}.sample" > "${PROD_DEPLOY_CONFIG_PATH}"
-              sed -i "s~{{CLOUDFRONTDISTRIBUTIONID}}~${CLOUDFRONTDISTRIBUTIONID}~g" "${PROD_DEPLOY_CONFIG_PATH}"
-              HUGO_ENV=production hugo deploy --invalidateCDN
-            else
-              echo "Not master branch, not deploying"
-            fi
+            sudo apt update
+            sudo apt install python3-pip
+            pip3 install awscli
+
+      - deploy:
+          name: Deploy to AWS
+          command: |
+            sed "s~{{S3URL}}~${S3URL}~g" "${PROD_DEPLOY_CONFIG_PATH}.sample" > "${PROD_DEPLOY_CONFIG_PATH}"
+            sed -i "s~{{CLOUDFRONTDISTRIBUTIONID}}~${CLOUDFRONTDISTRIBUTIONID}~g" "${PROD_DEPLOY_CONFIG_PATH}"
+            HUGO_ENV=production hugo deploy --invalidateCDN
+
+workflows:
+  version: 2
+  main-workflow:
+    jobs:
+      - test
+
+      - deploy:
+          context: aws-context
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - main
