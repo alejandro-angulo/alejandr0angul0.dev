@@ -1,8 +1,18 @@
-{{ $currentPage := . }}
-{{ if $currentPage.IsHome  }}
-<pre>
-░█░█░█▀▀░█░░░█░░░█▀█░░░█░█░█▀█░█▀▄░█░░░█▀▄
-░█▀█░█▀▀░█░░░█░░░█░█░░░█▄█░█░█░█▀▄░█░░░█░█
-░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀░░░▀░▀░▀▀▀░▀░▀░▀▀▀░▀▀░
-</pre>
-{{ end }}
+<div id="header">
+    <div id="banner">
+        <div class="lhs">
+            <a class="home-link" href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+        </div>
+        <div class="rhs">
+            <nav id="nav" class="nav justify-content-center">
+                {{ range .Site.Menus.main }}
+                <a class="nav-link" href="{{ .URL }}">
+                {{ $text := print .Name | safeHTML }}
+                {{ $text }}
+                </a>
+                {{ end }}
+            </nav>
+            <span class="current-page">[{{ .Title }}]</span>
+        </div>
+    </div>
+</div>
