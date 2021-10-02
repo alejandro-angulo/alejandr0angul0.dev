@@ -28,6 +28,36 @@ jobs:
             - public
             - config
             - themes
+  lint:
+    docker:
+      - image: cimg/python:3.9
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install pre-commit
+          command: pip install pre-commit
+
+      - run:
+          name: Setup pre-commit cache key
+          command: |
+            cp .pre-commit-config.yaml pre-commit-cache-key.txt
+            # Intentionally supplying --version twice to get verbose version information
+            python --version --version >> pre-commit-cache-key.txt
+
+      - restore_cache:
+          keys:
+            - v1-pre-commit-cache-{{ checksum "pre-commit-cache-key.txt" }}
+
+      - run:
+          name: Run pre-commit hooks
+          command: pre-commit run --from-ref main --to-ref HEAD
+
+      - save_cache:
+          key: v1-pre-commit-cache-{{ checksum "pre-commit-cache-key.txt" }}
+          paths:
+            - ~/.cache/pre-commit
 
   deploy:
     docker:
@@ -59,10 +89,13 @@ workflows:
     jobs:
       - test
 
+      - lint
+
       - deploy:
           context: aws-context
           requires:
             - test
+            - lint
           filters:
             branches:
               only:
