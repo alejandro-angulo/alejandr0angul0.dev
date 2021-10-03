@@ -21,3 +21,6 @@ repos:
     rev: v2.4.1
     hooks:
       - id: prettier
+        additional_dependencies:
+          - prettier@2.4.1
+          - prettier-plugin-go-template@0.0.11

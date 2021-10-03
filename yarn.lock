@@ -115,6 +115,7 @@ __metadata:
   dependencies:
     eslint: ^7.32.0
     prettier: ^2.4.1
+    prettier-plugin-go-template: ^0.0.11
   languageName: unknown
   linkType: soft
 
@@ -796,6 +797,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier-plugin-go-template@npm:^0.0.11":
+  version: 0.0.11
+  resolution: "prettier-plugin-go-template@npm:0.0.11"
+  dependencies:
+    ulid: ^2.3.0
+  peerDependencies:
+    prettier: ^2.0.0
+  checksum: 0c78d4f096d86d52fa40c11c81c4ab4b9d39732eb990fb5cb88bd2a43aefadf131d73d39f408446a805348117b5c69b441093e491ac175def86f83e38c7742ea
+  languageName: node
+  linkType: hard
+
 "prettier@npm:^2.4.1":
   version: 2.4.1
   resolution: "prettier@npm:2.4.1"
@@ -975,6 +987,15 @@ __metadata:
   version: 0.20.2
   resolution: "type-fest@npm:0.20.2"
   checksum: 4fb3272df21ad1c552486f8a2f8e115c09a521ad7a8db3d56d53718d0c907b62c6e9141ba5f584af3f6830d0872c521357e512381f24f7c44acae583ad517d73
+  languageName: node
+  linkType: hard
+
+"ulid@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "ulid@npm:2.3.0"
+  bin:
+    ulid: ./bin/cli.js
+  checksum: d6dbf253fdc189f60fe2829d934ee5447b3dab62d05449a2e0fe89670d77087dd6eba4f844a69f9ffdb01384ec6fd97bdd9be638fc67d593569a45e8969f1e69
   languageName: node
   linkType: hard
 

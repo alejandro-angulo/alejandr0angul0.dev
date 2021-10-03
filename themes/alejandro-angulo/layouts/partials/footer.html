@@ -1,1 +1,4 @@
-<script src="/js/keynav.js"></script>
+{{ $keynav := resources.Get "js/keynav.js" | minify | fingerprint }}<script
+  src="{{ $keynav.Permalink }}"
+  integrity="{{ $keynav.Data.Integrity }}"
+></script>

@@ -1,10 +1,25 @@
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/hack-font/3.3.0/web/hack.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-	<link rel="stylesheet" type="text/css" href="/css/highlight.css">
-    {{ $title := print .Site.Title " | " .Title }}
-    {{ if .IsHome }}{{ $title = .Site.Title }}{{ end }}
-    <title>{{ $title }}</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/hack-font/3.3.0/web/hack.min.css"
+  />
+  {{ $main_style := resources.Get "css/main.css" | minify }}
+  {{ $highlight_style := resources.Get "css/highlight.css" | minify }}
+  {{ $css := slice $main_style $highlight_style | resources.Concat "css/style.css" | fingerprint }}
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ $css.Permalink }}"
+    integrity="{{ $css.Data.Integrity }}"
+  />
+  {{ $title := print .Site.Title " | " .Title }}
+  {{ if .IsHome }}
+    {{ $title =
+      .Site.Title
+    }}
+  {{ end }}
+  <title>{{ $title }}</title>
 </head>
