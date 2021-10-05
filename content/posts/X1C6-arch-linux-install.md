@@ -270,7 +270,7 @@ grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=ArchLinux
 ```
 
 Open up `/etc/default/grub` again and edit the `GRUB_CMDLINE_LINUX` line so it looks like this
-`GRUB_CMDLINE_LINUX=cryptdevice/nvme1n1p2:EncryptedBoot:allow-discards resume=/dev/mapper/Arch-swap`.
+`GRUB_CMDLINE_LINUX=cryptdevice=/dev/nvme1n1p2:EncryptedBoot:allow-discards resume=/dev/mapper/Arch-swap`.
 
 The `allow-discards` option also has to do with `TRIM`. Now the `grub` configuration is ready to be generated.
 
@@ -367,6 +367,13 @@ makepkg -si
 # clean up
 cd ..
 rm -rf yay
+```
+
+Set up ntp (keep time synchronized).
+
+```bash
+yay -S ntp
+sudo systemctl ntpd enable --now
 ```
 
 Set up `zsh`.
