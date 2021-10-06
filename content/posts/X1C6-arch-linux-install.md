@@ -555,7 +555,7 @@ Restart terminal and p10k config wizard will run (or manually run `p10k configur
 
 #### Vim plugin manager
 
-```
+```bash
 mkdir -p ~/.vim/bundle
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
@@ -584,7 +584,7 @@ Browse to `localhost:631` to configure printer (Brother HL-L2350 for me) (`yay -
 
 #### QMK
 
-```
+```bash
 yay -Q python-pip
 pip install --user qmk
 qmk setup
