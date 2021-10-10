@@ -20,9 +20,9 @@ of now the following are supported:
 ## Me
 
 I'm Alejandro Angulo, a code monkey living in the Los Angeles area. When I'm not ~~introducting bugs~~ writing beautiful,
-performant code, I like to reminisce about the before-times when masks weren't in style and sit-down dining was a thing. Nowadays,
-I like to pass the time binge watching TV shows on Hulu/Netflix and starting (but not finishing) personal projects.
+performant code I like [working on random personal projects](https://github.com/alejandro-angulo/qmk_firmware/), going to the gym,
+and hanging out with my girlfiend and my chihuahua.
 
-### Contact
+## Contact
 
 I can be reached at `iam@<the domain of this site>`.
