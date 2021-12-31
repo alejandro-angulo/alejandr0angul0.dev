@@ -40,15 +40,15 @@ read permissions to objects in the bucket.
 
 ```json
 {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::<your domain name here>/*"
-        }
-    ]
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::<your domain name here>/*"
+    }
+  ]
 }
 ```
 
@@ -75,7 +75,7 @@ aws route53 list-hosted-zones
 ## Setting up Certificate
 
 A cerificate is needed for https support. To do so a cert has to be requeted from AWS's aptly named AWS Certificate Manager (ACM).
-Once  a request is in, domain ownership needs to be validated (AWS can't be giving out certs for just any domain). Validation can
+Once a request is in, domain ownership needs to be validated (AWS can't be giving out certs for just any domain). Validation can
 be done through DNS or email. Email validation requires controlling an email address like `admin@suprecool.tld` and clicking a
 link in an email sent to it. DNS validation requires adding a CNAME record in a hosted zone.
 
@@ -98,17 +98,21 @@ Prepare a json file to add the required CNAME.
 
 ```json
 {
-    "Changes": [{
-        "Action": "CREATE",
-        "ResourceRecordSet": {
-            "Name": "<name shown in last command>",
-            "Type": "CNAME",
-            "TTL": 300,
-            "ResourceRecords": [{
-                "Value": "<value show in last command>"
-            }]
-        }
-    }]
+  "Changes": [
+    {
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "<name shown in last command>",
+        "Type": "CNAME",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "<value show in last command>"
+          }
+        ]
+      }
+    }
+  ]
 }
 ```
 
@@ -130,128 +134,116 @@ for the JSON required is below. The region name is whatever was configured when 
 
 ```json
 {
-    "Aliases": {
-        "Quantity": 1,
-        "Items": [
-            "<your domain name here>"
-        ]
-    },
-    "DefaultRootObject": "index.html",
-    "Origins": {
-        "Quantity": 1,
-        "Items": [
-            {
-                "Id": "S3-Website-<your domain name here>.s3-website-<your region here>.amazonaws.com",
-                "DomainName": "<your domain name here>.s3-website-<your region here>.amazonaws.com",
-                "OriginPath": "",
-                "CustomHeaders": {
-                    "Quantity": 0
-                },
-                "CustomOriginConfig": {
-                    "HTTPPort": 80,
-                    "HTTPSPort": 443,
-                    "OriginProtocolPolicy": "http-only",
-                    "OriginSslProtocols": {
-                        "Quantity": 3,
-                        "Items": [
-                            "TLSv1",
-                            "TLSv1.1",
-                            "TLSv1.2"
-                        ]
-                    },
-                    "OriginReadTimeout": 30,
-                    "OriginKeepaliveTimeout": 5
-                },
-                "ConnectionAttempts": 3,
-                "ConnectionTimeout": 10
-            }
-        ]
-    },
-    "OriginGroups": {
+  "Aliases": {
+    "Quantity": 1,
+    "Items": ["<your domain name here>"]
+  },
+  "DefaultRootObject": "index.html",
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "S3-Website-<your domain name here>.s3-website-<your region here>.amazonaws.com",
+        "DomainName": "<your domain name here>.s3-website-<your region here>.amazonaws.com",
+        "OriginPath": "",
+        "CustomHeaders": {
+          "Quantity": 0
+        },
+        "CustomOriginConfig": {
+          "HTTPPort": 80,
+          "HTTPSPort": 443,
+          "OriginProtocolPolicy": "http-only",
+          "OriginSslProtocols": {
+            "Quantity": 3,
+            "Items": ["TLSv1", "TLSv1.1", "TLSv1.2"]
+          },
+          "OriginReadTimeout": 30,
+          "OriginKeepaliveTimeout": 5
+        },
+        "ConnectionAttempts": 3,
+        "ConnectionTimeout": 10
+      }
+    ]
+  },
+  "OriginGroups": {
+    "Quantity": 0
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "S3-Website-<your domain name here>.s3-website-<your region here>.amazonaws.com",
+    "ForwardedValues": {
+      "QueryString": false,
+      "Cookies": {
+        "Forward": "none"
+      },
+      "Headers": {
         "Quantity": 0
-    },
-    "DefaultCacheBehavior": {
-        "TargetOriginId": "S3-Website-<your domain name here>.s3-website-<your region here>.amazonaws.com",
-        "ForwardedValues": {
-            "QueryString": false,
-            "Cookies": {
-                "Forward": "none"
-            },
-            "Headers": {
-                "Quantity": 0
-            },
-            "QueryStringCacheKeys": {
-                "Quantity": 0
-            }
-        },
-        "TrustedSigners": {
-            "Enabled": false,
-            "Quantity": 0
-        },
-        "ViewerProtocolPolicy": "redirect-to-https",
-        "MinTTL": 0,
-        "AllowedMethods": {
-            "Quantity": 2,
-            "Items": [
-                "HEAD",
-                "GET"
-            ],
-            "CachedMethods": {
-                "Quantity": 2,
-                "Items": [
-                    "HEAD",
-                    "GET"
-                ]
-            }
-        },
-        "SmoothStreaming": false,
-        "DefaultTTL": 86400,
-        "MaxTTL": 31536000,
-        "Compress": false,
-        "LambdaFunctionAssociations": {
-            "Quantity": 0
-        },
-        "FieldLevelEncryptionId": ""
-    },
-    "CacheBehaviors": {
+      },
+      "QueryStringCacheKeys": {
         "Quantity": 0
+      }
     },
-    "CustomErrorResponses": {
-        "Quantity": 1,
-        "Items": [
-            {
-                "ErrorCode": 404,
-                "ResponsePagePath": "/404.html",
-                "ResponseCode": "404",
-                "ErrorCachingMinTTL": 60
-            }
-        ]
+    "TrustedSigners": {
+      "Enabled": false,
+      "Quantity": 0
     },
-    "Comment": "",
-    "Logging": {
-        "Enabled": false,
-        "IncludeCookies": false,
-        "Bucket": "",
-        "Prefix": ""
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "MinTTL": 0,
+    "AllowedMethods": {
+      "Quantity": 2,
+      "Items": ["HEAD", "GET"],
+      "CachedMethods": {
+        "Quantity": 2,
+        "Items": ["HEAD", "GET"]
+      }
     },
-    "PriceClass": "PriceClass_All",
-    "Enabled": true,
-    "ViewerCertificate": {
-        "ACMCertificateArn": "<your certificate ARN>",
-        "SSLSupportMethod": "sni-only",
-        "MinimumProtocolVersion": "TLSv1.2_2018",
-        "Certificate": "<your certificate ARN>",
-        "CertificateSource": "acm"
+    "SmoothStreaming": false,
+    "DefaultTTL": 86400,
+    "MaxTTL": 31536000,
+    "Compress": false,
+    "LambdaFunctionAssociations": {
+      "Quantity": 0
     },
-    "Restrictions": {
-        "GeoRestriction": {
-            "RestrictionType": "none",
-            "Quantity": 0
-        }
-    },
-    "WebACLId": "",
-    "HttpVersion": "http2",
-    "IsIPV6Enabled": true
+    "FieldLevelEncryptionId": ""
+  },
+  "CacheBehaviors": {
+    "Quantity": 0
+  },
+  "CustomErrorResponses": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "ErrorCode": 404,
+        "ResponsePagePath": "/404.html",
+        "ResponseCode": "404",
+        "ErrorCachingMinTTL": 60
+      }
+    ]
+  },
+  "Comment": "",
+  "Logging": {
+    "Enabled": false,
+    "IncludeCookies": false,
+    "Bucket": "",
+    "Prefix": ""
+  },
+  "PriceClass": "PriceClass_All",
+  "Enabled": true,
+  "ViewerCertificate": {
+    "ACMCertificateArn": "<your certificate ARN>",
+    "SSLSupportMethod": "sni-only",
+    "MinimumProtocolVersion": "TLSv1.2_2018",
+    "Certificate": "<your certificate ARN>",
+    "CertificateSource": "acm"
+  },
+  "Restrictions": {
+    "GeoRestriction": {
+      "RestrictionType": "none",
+      "Quantity": 0
+    }
+  },
+  "WebACLId": "",
+  "HttpVersion": "http2",
+  "IsIPV6Enabled": true
 }
 ```
 
@@ -276,18 +268,20 @@ Prepare a json file for the Route 53 request. Fun fact: `HostedZoneId` is hardco
 
 ```json
 {
-    "Changes": [{
-        "Action": "CREATE",
-        "ResourceRecordSet": {
-            "Name": "<your domain name here>.",
-            "Type": "A",
-            "AliasTarget": {
-                "HostedZoneId": "Z2FDTNDATAQYW2",
-                "DNSName": "<your CloudFront distribution domain name>.",
-                "EvaluateTargetHealth": false
-            }
+  "Changes": [
+    {
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "<your domain name here>.",
+        "Type": "A",
+        "AliasTarget": {
+          "HostedZoneId": "Z2FDTNDATAQYW2",
+          "DNSName": "<your CloudFront distribution domain name>.",
+          "EvaluateTargetHealth": false
         }
-    }]
+      }
+    }
+  ]
 }
 ```
 

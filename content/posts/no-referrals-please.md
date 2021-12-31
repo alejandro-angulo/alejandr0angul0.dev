@@ -8,8 +8,8 @@ draft = false
 
 ### TL;DR
 
-* Use `same-origin` Referrer Policy with Django
-* Double leters are unecesary and slow down typing ([see Referer in this document](https://tools.ietf.org/html/rfc1945))
+- Use `same-origin` Referrer Policy with Django
+- Double leters are unecesary and slow down typing ([see Referer in this document](https://tools.ietf.org/html/rfc1945))
 
 ---
 
@@ -25,7 +25,7 @@ that users are more likely to have the fonts already cached (making my site load
 
 But, what's this referrer business? Turns out that browsers send information on what page a user comes from. This information is
 stored in the headers under the `Referer` field. Yes, _referer_ and not _referrer_. According to wikipedia, [this
-mispelling](https://tools.ietf.org/html/rfc1945) [is found](https://tools.ietf.org/html/rfc2616) in [multiple
+misspelling](https://tools.ietf.org/html/rfc1945) [is found](https://tools.ietf.org/html/rfc2616) in [multiple
 RFCs](https://tools.ietf.org/html/rfc7231).
 
 This information seems pretty innocuous, but can be used (in tandem with other techniques) to track people online. Sites can

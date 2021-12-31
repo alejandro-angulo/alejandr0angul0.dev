@@ -7,9 +7,9 @@ tags = ["procrastination"]
 
 ### TL;DR
 
-* Travis build was failing.
-* Found a possible fix, but I didn't want to push commits just to check if it would work.
-* Ran [travis-build](https://github.com/travis-ci/travis-build) in a Docker container to test the fix.
+- Travis build was failing.
+- Found a possible fix, but I didn't want to push commits just to check if it would work.
+- Ran [travis-build](https://github.com/travis-ci/travis-build) in a Docker container to test the fix.
 
 ---
 
@@ -21,7 +21,7 @@ my server. About 5 minutes later I received an email telling me my build on Trav
 ```bash
 # ...snip...
 Error: could not determine PostgreSQL version from '10.1'
-    
+
     ----------------------------------------
 Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-build-wq2uqxzp/psycopg2/
 
@@ -30,7 +30,7 @@ The command "pip install -r requirements.txt" failed and exited with 1 during .
 Your build has been stopped.
 ```
 
-Well at least *my* code didn't break anything. But hey, it's a Sunday and I have chores to ignore. Let's look into this. I googled
+Well at least _my_ code didn't break anything. But hey, it's a Sunday and I have chores to ignore. Let's look into this. I googled
 the error and stumbled upon a [comment on Github](https://github.com/psycopg/psycopg2/issues/594#issuecomment-346514672) stating
 that the fix was to update the psycopg2 requirement to 2.7.1 (the current latest version). Great, that should be an easy fix. But
 hang on, I have all these chores to ignore. I can probably run Travis locally before pushing just to verify the fix. Let's look
@@ -66,8 +66,9 @@ Here are the steps that worked for me. I hope this is useful for someone else so
 First off, we'll need to decide on one of Travis's docker containers to run from. Available containers are [listed on
 Quay](https://quay.io/organization/travisci). We'll want one of the containers named `travis-<some language>`. I copy-pasted from
 the instructions in the Medium article so I ended up running everything under the `travis-jvm` container. In retrospect, I should
-have used `travis-python` since I was dealing with a Python project. The command `docker run -it -u travis
-quay.io/travisci/travis-jvm /bin/bash` can be used to run the container (replace `travis-jvm` with whatever container is desired).
+have used `travis-python` since I was dealing with a Python project. The command
+`docker run -it -u travis quay.io/travisci/travis-jvm /bin/bash`
+can be used to run the container (replace `travis-jvm` with whatever container is desired).
 
 Before setting up `travis-build` we can choose which version of Ruby to work with. The latest stable version was 2.4.3 when I
 checked so I decided to go with that.
@@ -76,7 +77,7 @@ checked so I decided to go with that.
 rvm install 2.4.3 rvm use 2.4.3
 ```
 
-Once Ruby is set up to our liking we can set up `travis-build`: 
+Once Ruby is set up to our liking we can set up `travis-build`:
 
 ```bash
 $ travis compile
@@ -149,4 +150,3 @@ as I had hoped :) .
 This process is pretty convoluted but I think I can automate this and include it a container for my project. But, maybe I'm better
 off using something like Jenkins for CI if I'm so concerned with running my builds locally. At least I can feel like I did
 something productive while avoiding my chores.
-

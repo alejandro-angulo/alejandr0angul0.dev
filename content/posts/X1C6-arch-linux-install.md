@@ -14,7 +14,7 @@ I recently picked up a 6th gen X1 Carbon so of course I wanted to install Arch L
 in case I ever have to do this again. I used [ejmg's
 guide](https://github.com/ejmg/an-idiots-guide-to-installing-arch-on-a-lenovo-carbon-x1-gen-6) guide, [HardenedArray's gist
 guide](https://gist.github.com/HardenedArray/ee3041c04165926fca02deca675effe1), and the [Arch Linux wiki
-page](https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_6)) as references.
+page](<https://wiki.archlinux.org/index.php/Lenovo_ThinkPad_X1_Carbon_(Gen_6)>) as references.
 
 _Note_: This was my setup as of July 2020ish. Things have changed since then.
 
@@ -22,13 +22,13 @@ _Note_: This was my setup as of July 2020ish. Things have changed since then.
 
 ### Prepare Installation Media
 
-This part is relatively straighforward. Check out the [arch wiki
+This part is relatively straightforward. Check out the [arch wiki
 page](https://wiki.archlinux.org/title/USB_flash_installation_medium).
 
 ### Prepare BIOS
 
 BIOS -> Security -> Secure Boot -> Disable
-BIOS -> Config  -> Thunderbolt(TM) 3 -> Thunderbolt BIOS Assist Mode: Enabled
+BIOS -> Config -> Thunderbolt(TM) 3 -> Thunderbolt BIOS Assist Mode: Enabled
 
 Configure boot order to boot off USB
 BIOS -> Startup -> Boot -> Move USB HDD to the top of the list (also moved USB FDD to 2nd since I wasn't sure which one I needed
@@ -62,18 +62,18 @@ commands.
 
 ### Partition Drive
 
-My device had two SSDs installed. `lsblk` showed them as `nvme0n1` and `nvme1n1`. My primary SSD was `nvme1n1` so I ran `gdisk
-/dev/nmve1n1`. You can enter `?` to get a list of commands. I went ahead and deleted (`d`) all the existing partitions. Created an
-EFI partition (`n`) on partition 1 with a size of 100 MiB (chose first sector and then `+100M` for the last sector) with hex code
-EF00 (EFI partition). I created partition 2 to span the rest of the device. I tried having a separate boot partition but ran into
-issues getting my system to boot up properly. It's probably possible to have a separate boot partition but it probably makes the
-setup more complex. So, unless you know what you're doing, don't create any other partitions on this drive.
+My device had two SSDs installed. `lsblk` showed them as `nvme0n1` and `nvme1n1`. My primary SSD was `nvme1n1` so I ran
+`gdisk /dev/nmve1n1`. You can enter `?` to get a list of commands. I went ahead and deleted (`d`) all the existing partitions.
+Created an EFI partition (`n`) on partition 1 with a size of 100 MiB (chose first sector and then `+100M` for the last sector)
+with hex code EF00 (EFI partition). I created partition 2 to span the rest of the device. I tried having a separate boot partition
+but ran into issues getting my system to boot up properly. It's probably possible to have a separate boot partition but it
+probably makes the setup more complex. So, unless you know what you're doing, don't create any other partitions on this drive.
 
 For my second drive I ran `gdisk /dev/nvme0n1` and left a single partition spanning the entire device with hex code 8300 (Linux
 FS). This drive can be partitioned however you like.
 
-I should zero my devices but I'm not that paranoid so I didn't. This could be done with `ddrescue` or with `cat` like so `cat
-/dev/zero > /dev/nvme1n1 && cat /dev/zero /dev/nme0n1`.
+I should zero my devices but I'm not that paranoid so I didn't. This could be done with `ddrescue` or with `cat` like so
+`cat /dev/zero > /dev/nvme1n1 && cat /dev/zero /dev/nme0n1`.
 
 ### Setup filesystems
 
@@ -118,7 +118,6 @@ lvcreate -l 100%FREE Data -n root
 #### Create Filesystems
 
 Create a FAT32 filesystem for the EFI partition, set up the swap partition, and format the rest with ext4.
-
 
 ```bash
 mkfs.vfat -F 32 /dev/nvme1n1p1
@@ -203,7 +202,7 @@ Replace `alejandro` with your username. `sudo` will later be configured to allow
 ### More Encryption Configuration
 
 When the system boots up, the bootloader (I'll be using `grub`) will need to read `/boot` and the system will need access to any
-other volumes specified in the fstab file.  Without any extra configuration, there will be a passphrase prompt for every volume.
+other volumes specified in the fstab file. Without any extra configuration, there will be a passphrase prompt for every volume.
 LUKS devices have multiple "key slots." It's possible to use a key file to fill in one of the key slots and later pass that file
 in to open (decrypt) a LUKS device. This makes it possible to have `grub` handle decryption of root and swap without requiring the
 user to enter multiple passphrases (which is clunky and error-prone). Other volumes (my data root volume) can be configured in
@@ -245,7 +244,7 @@ Secondary      /dev/nvme0n1p1                               /crypto_keyfile.bin 
 ```
 
 The `discard` option has to do with the `TRIM` command and is basically a performance optimization. Read more about it on
-[wikipedia](https://en.wikipedia.org/wiki/Trim_(computing)).
+[wikipedia](<https://en.wikipedia.org/wiki/Trim_(computing)>).
 
 Edit the `mkinitpcio` configuration file (`/etc/mkinitpcio.conf`) to setup decryption.
 
@@ -294,7 +293,7 @@ either).
 
 ### First Logon
 
-Log in to your system as root and alow users in the wheel group to use `sudo`. Run `visudo`, if you get an error saying no editor
+Log in to your system as root and allow users in the wheel group to use `sudo`. Run `visudo`, if you get an error saying no editor
 found just prepend the editor's path like this `EDITOR=/usr/bin/vim visudo`. Uncomment the following line `%wheel ALL=(ALL) ALL`.
 You can log out and log in with your own user account now.
 
@@ -396,6 +395,7 @@ cp /etc/sway/config ~/.config/sway
 mkdir -p ~/.config/waybar
 cp /etc/xdg/waybar/* ~/.config/waybar
 ```
+
 I edited my sway config to mimic my i3 config so I needed to grab a few packages first.
 
 ```bash
@@ -419,7 +419,7 @@ echo "export MOZ_ENABLE_WAYLAND=1" >> ~/.zprofile
 
 After restarting sway, I was able to run Firefox. I ran into my next issue (seems like a recurring theme) soon after. Everything
 on the screen seemed too big. The scaling factor for my display was too large (first world problem, I know). Luckily for me sway
-supports (but doesn't reccommend) fractional scaling. I got my display's name using `swaymsg`.
+supports (but doesn't recommend) fractional scaling. I got my display's name using `swaymsg`.
 
 ```bash
 swaymsg -t get_outputs
@@ -511,8 +511,9 @@ export SSH_AUTH_SOCK
 sway
 ```
 
-Store spotify password in keystore `secret-tool --label='Spotify' application rust-keyring service spotifyd
-username <your-username>`. You'll be prompted to create a default keyring if one hasn't already been created.
+Store spotify password in keystore
+`secret-tool --label='Spotify' application rust-keyring service spotifyd username <your-username>`. You'll be prompted to create a
+default keyring if one hasn't already been created.
 
 Create systemd unit file and run spotifyd
 
@@ -537,7 +538,7 @@ alias config='/usr/bin/git --git-dir=$HOME/.myconf/ --work-tree=$HOME'  # Add th
 ```bash
 yay -S light
 usermod -a -G video alejandro  # need to be in video group to control backlight
-# below 2 reload udev rules, so light doesn't requre root permissions
+# below 2 reload udev rules, so light doesn't require root permissions
 sudo udevadm control --reload-rule
 sudo udevadm trigger
 # Above 2 commands didn't work for me, but did after a reboot

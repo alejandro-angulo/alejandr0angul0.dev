@@ -19,4 +19,3 @@ gzip = false
 [[matchers]]
 pattern = "^.+\\.(html|xml|json)$"
 gzip = true
-
