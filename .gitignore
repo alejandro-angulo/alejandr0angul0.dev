@@ -4,6 +4,9 @@
 # Deployment config
 config/production/deployment.toml
 
+# Hugo build lock
+.hugo_build.lock
+
 # yarn
 .pnp.*
 .yarn/*
