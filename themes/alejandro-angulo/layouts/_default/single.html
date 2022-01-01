@@ -1,5 +1,11 @@
 {{ define "main" }}
   <h1>{{ .Title }}</h1>
   {{ partial "metadata.html" . }}
+  <a
+    class="glyph-link"
+    href="{{ $.Param "githubURL" }}/commits/{{ $.Param "gitBranch" }}/content/{{ .File.Dir }}/{{ .File.LogicalName }}"
+  >
+    View post history <i class="nf nf-fa-github_alt"></i>
+  </a>
   {{ .Content }}
 {{ end }}

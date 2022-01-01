@@ -4,11 +4,12 @@
   <link
     rel="stylesheet"
     type="text/css"
-    href="https://cdnjs.cloudflare.com/ajax/libs/hack-font/3.3.0/web/hack.min.css"
+    href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css"
   />
   {{ $main_style := resources.Get "css/main.css" | minify }}
   {{ $highlight_style := resources.Get "css/highlight.css" | minify }}
-  {{ $css := slice $main_style $highlight_style | resources.Concat "css/style.css" | fingerprint }}
+  {{ $nerdfont_style := resources.Get "css/nerd-fonts-generated.css" | minify }}
+  {{ $css := slice $main_style $highlight_style $nerdfont_style | resources.Concat "css/style.css" | fingerprint }}
   <link
     rel="stylesheet"
     type="text/css"
