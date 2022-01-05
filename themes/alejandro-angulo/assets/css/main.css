@@ -25,6 +25,10 @@ a:hover {
   padding-top: 0.1em;
 }
 
+#content p {
+  line-height: 1.4em;
+}
+
 #header {
   background-color: #3a3a3a;
   top: 0;
