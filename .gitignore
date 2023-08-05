@@ -7,11 +7,10 @@ config/production/deployment.toml
 # Hugo build lock
 .hugo_build.lock
 
-# yarn
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+# Nix artifacts
+result
+
+# devenv artifacts
+.devenv
+.pre-commit-config.yaml
+
