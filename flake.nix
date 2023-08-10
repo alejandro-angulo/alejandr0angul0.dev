@@ -65,8 +65,8 @@
                 prettier.enable = true;
               };
               settings = {
-                eslint.binPath = ./node_modules/.bin/eslint;
-                prettier.binPath = ./node_modules/.bin/prettier;
+                eslint.binPath = self.outPath + "/node_modules/.bin/es-lint";
+                prettier.binPath = self.outPath + "/node_modules/.bin/prettier";
               };
             };
 
