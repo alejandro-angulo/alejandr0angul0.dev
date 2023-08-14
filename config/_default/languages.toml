@@ -1,12 +1,14 @@
 [en]
 languageName = "English"
 title = "alejandr00"
-subtitle = ""
-owner = ""
-keywords = ""
 copyright = ""
-menuMore = "Show more"
+
+[en.params]
+subtitle = ""
+keywords = ""
+owner = ""
 readMore = "Read more"
+menuMore = "Show more"
 readOtherPosts = "Read other posts"
 missingContentMessage = "Page not found..."
 missingBackButtonLabel = "Back to home page"
