@@ -2,7 +2,7 @@
   description = "Alejandro Angulo's Personal Website";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:alejandro-angulo/nixpkgs/update-html-proofer";
     flake-utils.url = "github:numtide/flake-utils";
     devenv.url = "github:cachix/devenv";
   };
@@ -21,14 +21,33 @@
   } @ inputs:
     flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
+      utf8Locale = pkgs.glibcLocales.override {
+        allLocales = false;
+      };
     in {
       packages.alejandr0angul0-dot-dev = pkgs.stdenv.mkDerivation {
         name = "alejandr0angul0-dot-dev";
         src = self;
-        buildInputs = [pkgs.git pkgs.nodePackages.prettier];
+
+        buildInputs = with pkgs; [
+          git
+          nodePackages.prettier
+        ];
         buildPhase = ''
-          ${pkgs.hugo}/bin/hugo
+          ${pkgs.hugo}/bin/hugo --minify
         '';
+
+        doCheck = true;
+        nativeCheckInputs = with pkgs; [html-proofer utf8Locale];
+        checkPhase = ''
+          env LOCALE_ARCHIVE=${utf8Locale}/lib/locale/locale-archive LC_ALL=en_US.UTF-8 \
+          ${pkgs.html-proofer}/bin/htmlproofer public \
+            --allow-hash-href \
+            --ignore-empty-alt \
+            --disable-external \
+            --no-enforce-https
+        '';
+
         installPhase = "cp -r public $out";
       };
 
@@ -52,6 +71,7 @@
             packages = with pkgs; [
               alejandra
               hugo
+              html-proofer
             ];
 
             pre-commit = {
@@ -60,7 +80,7 @@
                 eslint.enable = true;
                 markdownlint = {
                   enable = true;
-                  excludes = ["node_modules"];
+                  excludes = ["node_modules" "flake.lock"];
                 };
                 prettier.enable = true;
               };
