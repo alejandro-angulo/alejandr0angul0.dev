@@ -2,7 +2,7 @@
   description = "Alejandro Angulo's Personal Website";
 
   inputs = {
-    nixpkgs.url = "github:alejandro-angulo/nixpkgs/update-html-proofer";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     devenv.url = "github:cachix/devenv";
   };
@@ -80,9 +80,12 @@
                 eslint.enable = true;
                 markdownlint = {
                   enable = true;
-                  excludes = ["node_modules" "flake.lock"];
+                  excludes = ["node_modules"];
                 };
-                prettier.enable = true;
+                prettier = {
+                  enable = true;
+                  excludes = ["flake.lock"];
+                };
               };
               settings = {
                 eslint.binPath = self.outPath + "/node_modules/.bin/es-lint";
