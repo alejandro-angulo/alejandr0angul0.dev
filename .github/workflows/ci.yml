@@ -1,11 +1,27 @@
-name: "Test"
+name: "CI"
 
 on:
   pull_request:
   push:
 
 jobs:
-  tests:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v22
+      - uses: cachix/cachix-action@v12
+        with:
+          name: devenv
+      - uses: cachix/cachix-action@v12
+        with:
+          name: alejandr0angul0-dev
+      - name: Install devenv.sh
+        run: nix profile install tarball+https://install.devenv.sh/latest
+        shell: sh
+      - run: nix develop --impure --command bash -c 'pre-commit run --from-ref main --to-ref HEAD'
+  build:
+    needs: [lint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
