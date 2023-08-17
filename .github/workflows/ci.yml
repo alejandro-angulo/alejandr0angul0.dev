@@ -19,5 +19,4 @@ jobs:
       - name: Install devenv.sh
         run: nix profile install tarball+https://install.devenv.sh/latest
         shell: sh
-      - run: env DEVENV_USING_FLAKES=1 devenv ci
-      - run: env DEVENV_USING_FLAKES=1 devenv shell echo ok
+      - run: nix flake build
