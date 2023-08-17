@@ -76,6 +76,7 @@
 
             pre-commit = {
               hooks = {
+                actionlint.enable = true;
                 alejandra.enable = true;
                 eslint.enable = true;
                 markdownlint = {
