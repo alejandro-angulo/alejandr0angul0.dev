@@ -4,6 +4,8 @@
 # Deployment config
 config/production/deployment.toml
 
+/node_modules
+
 # Hugo build lock
 .hugo_build.lock
 

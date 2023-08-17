@@ -87,10 +87,6 @@
                   excludes = ["flake.lock"];
                 };
               };
-              settings = {
-                eslint.binPath = self.outPath + "/node_modules/.bin/es-lint";
-                prettier.binPath = self.outPath + "/node_modules/.bin/prettier";
-              };
             };
 
             enterShell = ''
