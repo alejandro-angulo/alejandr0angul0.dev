@@ -69,9 +69,11 @@
             };
 
             packages = with pkgs; [
+              actionlint
               alejandra
               hugo
               html-proofer
+              awscli2
             ];
 
             pre-commit = {
