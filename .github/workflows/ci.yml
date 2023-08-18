@@ -74,6 +74,5 @@ jobs:
         run: |
           sed 's~{{S3URL}}~${{ secrets.S3URL }}~g' "${PROD_DEPLOY_CONFIG_PATH}.sample" > "${PROD_DEPLOY_CONFIG_PATH}"
           sed -i 's~{{CLOUDFRONTDISTRIBUTIONID}}~${{ secrets.CLOUDFRONTDISTRIBUTIONID }}~g' "${PROD_DEPLOY_CONFIG_PATH}"
-          env 
-            nix develop --accept-flake-config --impure --command bash \
-              -c 'hugo deploy --invalidateCDN'
+          nix develop --accept-flake-config --impure --command bash \
+            -c 'hugo deploy --invalidateCDN'
