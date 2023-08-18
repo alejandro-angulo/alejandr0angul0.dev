@@ -56,10 +56,9 @@ jobs:
         run: |
           sed 's~{{S3URL}}~${{ secrets.S3URL }}~g' "${PROD_DEPLOY_CONFIG_PATH}.sample" > "${PROD_DEPLOY_CONFIG_PATH}"
           sed -i 's~{{CLOUDFRONTDISTRIBUTIONID}}~${{ secrets.CLOUDFRONTDISTRIBUTIONID }}~g' "${PROD_DEPLOY_CONFIG_PATH}"
-          nix develop --accept-flake-config --impure --command bash -c << EOF
-          env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-            AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }} \
-            HUGO_ENV=production \
-            hugo deploy --invalidateCDN
-          EOF
+          nix develop --accept-flake-config --impure --command bash \
+            -c env AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+              AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+              AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }} \
+              HUGO_ENV=production \
+              hugo deploy --invalidateCDN
