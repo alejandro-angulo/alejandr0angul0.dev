@@ -29,16 +29,11 @@
         name = "alejandr0angul0-dot-dev";
         src = self;
 
-        buildInputs = with pkgs; [
-          git
-          nodePackages.prettier
-        ];
         buildPhase = ''
           ${pkgs.hugo}/bin/hugo --minify
         '';
 
         doCheck = true;
-        nativeCheckInputs = with pkgs; [html-proofer utf8Locale];
         checkPhase = ''
           env LOCALE_ARCHIVE=${utf8Locale}/lib/locale/locale-archive LC_ALL=en_US.UTF-8 \
           ${pkgs.html-proofer}/bin/htmlproofer public \
