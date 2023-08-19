@@ -23,6 +23,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       utf8Locale = pkgs.glibcLocales.override {
         allLocales = false;
+        locales = ["en_US.UTF-8/UTF-8"];
       };
     in {
       packages.alejandr0angul0-dot-dev = pkgs.stdenv.mkDerivation {
@@ -43,7 +44,9 @@
             --no-enforce-https
         '';
 
-        installPhase = "cp -r public $out";
+        installPhase = ''
+          cp -r public "$out"
+        '';
       };
 
       defaultPackage = self.packages.${system}.alejandr0angul0-dot-dev;
