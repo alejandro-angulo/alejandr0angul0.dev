@@ -88,6 +88,10 @@
                   excludes = ["flake.lock"];
                 };
               };
+
+              settings.markdownlint.config = {
+                MD013.code_blocks = false;
+              };
             };
 
             enterShell = ''
