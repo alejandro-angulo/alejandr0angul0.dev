@@ -4,7 +4,7 @@ date = "2023-08-24T08:23:46-07:00"
 author = "alejandro"
 authorTwitter = "" #do not include @
 cover = ""
-tags = ["idk some tag", "another"]
+tags = ["nix flake", "cachix", "devenv", "meta"]
 keywords = ["nix"]
 showFullContent = false
 +++
