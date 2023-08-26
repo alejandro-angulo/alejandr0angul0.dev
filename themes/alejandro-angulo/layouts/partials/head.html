@@ -15,8 +15,7 @@
   />
   {{ $main_style := resources.Get "css/main.css" | minify }}
   {{ $highlight_style := resources.Get "css/highlight.css" | minify }}
-  {{ $nerdfont_style := resources.Get "css/nerd-fonts-generated.css" | minify }}
-  {{ $css := slice $main_style $highlight_style $nerdfont_style | resources.Concat "css/style.css" | fingerprint }}
+  {{ $css := slice $main_style $highlight_style | resources.Concat "css/style.css" | fingerprint }}
   <link
     rel="stylesheet"
     type="text/css"
