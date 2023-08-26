@@ -6,6 +6,13 @@
     type="text/css"
     href="https://cdn.jsdelivr.net/npm/hack-font@3/build/web/hack.css"
   />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.css"
+    integrity="sha512-/0+jCMeks7Sm7B2Jai6K8JDYQqiwWiY73tw+G6BQkisKhUC0fqKt9Sd8noZvHPHl5rm9/cJ5hcuzzONlFvLMQQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
   {{ $main_style := resources.Get "css/main.css" | minify }}
   {{ $highlight_style := resources.Get "css/highlight.css" | minify }}
   {{ $nerdfont_style := resources.Get "css/nerd-fonts-generated.css" | minify }}
