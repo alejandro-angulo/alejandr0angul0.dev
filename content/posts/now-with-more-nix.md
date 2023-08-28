@@ -1,6 +1,6 @@
 +++
 title = "Now With More Nix"
-date = "2023-08-24T08:23:46-07:00"
+date = "2023-08-27T17:25:57-07:00"
 author = "alejandro"
 authorTwitter = "" #do not include @
 cover = ""
@@ -16,7 +16,7 @@ flake](https://github.com/alejandro-angulo/dotfiles) to manage my personal
 machines. I'm going all in on nix and wanted to update the deployment process
 for this site to use nix flakes as well.
 
-## Managing Develop Environments with devenv and nix flakes
+## Managing Development Environments with devenv and nix flakes
 
 It's been a while since I touched anything on this site and I didn't have any
 of the right packages installed to work on this. I could have installed
@@ -61,6 +61,10 @@ post.
                   excludes = ["flake.lock"];
                 };
               };
+
+              settings.markdownlint.config = {
+                MD013.code_blocks = false;
+              };
             };
 
             enterShell = ''
@@ -75,9 +79,12 @@ This completely configures my development environment! It has all the packages
 I want and sets up some pre-commit hooks for me in a single file. I don't need
 to manage a `.pre-commit-config.yaml` and an `.mdlrc` file separately (these
 files configure [pre-commit](https://pre-commit.com/) and
-[markdownlint](https://github.com/markdownlint/markdownlint) respectively).
+[markdownlint](https://github.com/markdownlint/markdownlint) respectively). The
+best part is that I can easily get this development environment set up on any
+machine (assuming I have [nix set up with flakes
+support](https://nixos.wiki/wiki/Flakes#Enable_flakes) of course).
 
-My `flake.nix` can accomplish what would traditionally be down with
+My `flake.nix` can accomplish what would traditionally be done with
 [make](https://www.gnu.org/software/make/) and a `Makefile`. This section
 handles building the site
 
@@ -273,7 +280,7 @@ Once those checks are ready it's time to make sure the site can be built
 successfully. I ran into another snafu with [a bug in github's
 `upload-artifacts`
 action](https://github.com/actions/upload-artifact/issues/92); luckily
-`exFalso` shared [a
+[`exFalso` shared a
 workaround](https://github.com/actions/upload-artifact/issues/92#issuecomment-1080347032).
 
 ```yaml
@@ -311,6 +318,7 @@ The deploy step configures some secrets and uses hugo's provided deploy subcomma
       -c 'hugo deploy --invalidateCDN'
 ```
 
-## ...cool I guess?
+## "...cool I guess?"
 
-So yeah, I have exactly the same site now.
+So yeah, I have exactly the same site now. Nothing changes from a reader's
+perspective but this scratched my tinkering itch.
