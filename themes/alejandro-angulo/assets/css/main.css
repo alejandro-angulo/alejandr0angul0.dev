@@ -1,9 +1,19 @@
+:root {
+  --main-page-max-width: 1000px;
+}
+
 body {
   background-color: #1d2021;
   color: #ffffdf;
   margin: 1em;
-  max-width: 800px;
+  max-width: var(--main-page-max-width);
   margin: 1em auto 0;
+  font-family: OpenSans, sans-serif;
+  font-size: 1.2em;
+}
+
+pre,
+code {
   font-family: Hack, monospace;
 }
 
@@ -21,7 +31,7 @@ a {
   padding: 0.1em;
 }
 a:visited {
-  color: #005f87;
+  color: #961ee1;
 }
 a:hover {
   background-color: #00a7af;
@@ -49,7 +59,7 @@ a:hover {
 }
 
 #banner {
-  max-width: 800px;
+  max-width: var(--main-page-max-width);
   margin: 0 auto;
   padding: 0.3em 0;
 }
