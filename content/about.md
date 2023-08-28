@@ -21,7 +21,7 @@ of now the following are supported:
 
 I'm Alejandro Angulo, a code monkey living in the Los Angeles area. When I'm not ~~introducting bugs~~ writing beautiful,
 performant code I like [working on random personal projects](https://github.com/alejandro-angulo/qmk_firmware/), going to the gym,
-and hanging out with my girlfiend and my chihuahua.
+and hanging out with my wife and our chihuahua.
 
 ## Contact
 
