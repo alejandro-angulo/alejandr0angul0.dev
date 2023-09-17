@@ -49,6 +49,10 @@
         '';
       };
 
+      # Workaround for cachix/devenv#756
+      # See here: https://github.com/cachix/devenv/issues/756
+      packages.devenv-up = self.devShell.${system}.config.procfileScript;
+
       defaultPackage = self.packages.${system}.alejandr0angul0-dot-dev;
 
       apps = rec {
@@ -93,6 +97,8 @@
                 MD013.code_blocks = false;
               };
             };
+
+            processes.hugo-server.exec = "${pkgs.hugo}/bin/hugo server";
 
             enterShell = ''
               export PATH=./node_modules/.bin:$PATH
