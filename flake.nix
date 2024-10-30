@@ -86,15 +86,14 @@
                 markdownlint = {
                   enable = true;
                   excludes = ["node_modules"];
+                  settings.configuration = {
+                    MD013.code_blocks = false;
+                  };
                 };
                 prettier = {
                   enable = true;
                   excludes = ["flake.lock"];
                 };
-              };
-
-              settings.markdownlint.config = {
-                MD013.code_blocks = false;
               };
             };
 
