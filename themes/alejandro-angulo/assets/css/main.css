@@ -3,8 +3,8 @@
 }
 
 body {
-  background-color: #1d2021;
-  color: #ffffdf;
+  background-color: #1e1e2e;
+  color: #cdd6f4;
   margin: 1em;
   max-width: var(--main-page-max-width);
   margin: 1em auto 0;
@@ -27,15 +27,17 @@ i.fab {
 }
 
 a {
-  color: #00a7af;
+  color: #89b4fa;
   padding: 0.1em;
 }
+
 a:visited {
-  color: #961ee1;
+  color: #cba6f7;
 }
+
 a:hover {
-  background-color: #00a7af;
-  color: #1d2021;
+  background-color: #89b4fa;
+  color: #1e1e2e;
   text-decoration: none;
 }
 
@@ -49,7 +51,7 @@ a:hover {
 }
 
 #header {
-  background-color: #3a3a3a;
+  background-color: #11111b;
   top: 0;
   left: 0;
   margin: 0;
@@ -63,8 +65,9 @@ a:hover {
   margin: 0 auto;
   padding: 0.3em 0;
 }
+
 #banner .current-page {
-  color: #ffaf00;
+  color: #94e2d5;
   padding-left: 5px;
 }
 
@@ -85,12 +88,14 @@ a:hover {
   text-decoration: none;
   padding: 0 5px;
 }
+
 .nav-link,
 .nav-link:visited,
 .home-link,
 .home-link:visited {
-  color: #949494;
+  color: #7f849c;
 }
+
 .nav-link:hover,
 .home-link:hover {
   color: inherit;
@@ -100,6 +105,8 @@ a:hover {
 .highlight .chroma {
   padding: 1em;
   overflow-x: scroll;
+  border: 5px solid #b4befe;
+  border-radius: 10px;
 }
 
 .active:before {
