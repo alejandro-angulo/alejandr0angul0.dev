@@ -3,9 +3,9 @@
   {{ partial "metadata.html" . }}
   <a
     class="glyph-link"
-    href="{{ $.Param "githubURL" }}/commits/{{ $.Param "gitBranch" }}/content/{{ .File.Dir }}/{{ .File.LogicalName }}"
+    href="{{ $.Param "githubURL" }}/commits/{{ $.Param "gitBranch" }}/content/{{ .File.Path }}"
   >
-    View post history <i class="fab fa-github-alt"></i>
+    View post history <i class="fab fa-git-alt"></i>
   </a>
   {{ .Content }}
 {{ end }}
