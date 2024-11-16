@@ -12,7 +12,7 @@ showFullContent = false
 It's been about a year since my last post into the void. Since [my last
 post](/posts/dotfiles) I've completely overhauled how my computers are
 configured. I now have [a nix
-flake](https://github.com/alejandro-angulo/dotfiles) to manage my personal
+flake](https://git.alejandr0angul0.dev/alejandro-angulo/dotfiles) to manage my personal
 machines. I'm going all in on nix and wanted to update the deployment process
 for this site to use nix flakes as well.
 
@@ -22,7 +22,7 @@ It's been a while since I touched anything on this site and I didn't have any
 of the right packages installed to work on this. I could have installed
 programs like [hugo](https://gohugo.io/) system-wide. But, since I have been
 tinkering with nix, I wanted to use [a flake to manage all the
-things](https://github.com/alejandro-angulo/alejandr0angul0.dev/blob/b8174db2150f3ac9925f8450bc75264678cf06c9/flake.nix)
+things](https://git.alejandr0angul0.dev/alejandro-angulo/alejandr0angul0.dev/blob/b8174db2150f3ac9925f8450bc75264678cf06c9/flake.nix)
 needed for development (including writing posts).
 
 Here's what the devenv configuration looked like at the time I was writing this
@@ -166,7 +166,7 @@ into `$out`.
 This site is deployed to an S3 bucket just like before switching over to using
 nix. However, I don't need to use docker containers anymore and can use nix
 fully. Here's the [github actions
-configuration](https://github.com/alejandro-angulo/alejandr0angul0.dev/blob/97a655bc0c3e18f8c8921b90f14f87f5a07ae837/.github/workflows/ci.yml)
+configuration](https://git.alejandr0angul0.dev/alejandro-angulo/alejandr0angul0.dev/blob/97a655bc0c3e18f8c8921b90f14f87f5a07ae837/.github/workflows/ci.yml)
 at the time of writing.
 
 ```yaml
